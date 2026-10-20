@@ -2,6 +2,7 @@ package com.demo.bookstore_app.repositories;
 
 import com.demo.bookstore_app.models.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +14,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByBookGenreContainingIgnoreCase(String genre);
     List<Book> findByAuthorNameContainingIgnoreCase(String author);
 	List<Book> findByBookPriceBetween(Double minPrice, Double maxPrice);
+	
+	@Query("""
+			SELECT b.bookGenre, COUNT(b)
+			FROM Book b
+			GROUP BY b.bookGenre
+			""")
+	List<Object[]> countBooksByGenre();
+	
+	
 }

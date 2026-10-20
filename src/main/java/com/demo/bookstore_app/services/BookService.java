@@ -5,7 +5,9 @@ import com.demo.bookstore_app.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookService {
@@ -69,5 +71,21 @@ public class BookService {
 
 	public List<Book> getBooksByPriceRange(Double minPrice, Double maxPrice) {
 		return bookRepository.findByBookPriceBetween(minPrice, maxPrice);
+	}
+	
+	public Map<String, Long> getBookCountByGenre(){
+		List<Object[]> results = bookRepository.countBooksByGenre();
+		
+		Map<String, Long> counts = new HashMap<>();
+		
+		for(Object[] result : results) {
+			String genre = (String) result[0];
+			Long count = ((Number) result[1]).longValue();
+			
+			counts.put(genre, count);
+		}
+		
+		return counts;
+		
 	}
 }
