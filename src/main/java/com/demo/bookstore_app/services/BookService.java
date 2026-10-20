@@ -66,4 +66,8 @@ public class BookService {
     public List<Book> searchBooksByGenre(String genre){
         return bookRepository.findByBookGenreContainingIgnoreCase(genre);
     }
+
+	public List<Book> getBooksByPriceRange(Double minPrice, Double maxPrice) {
+		return bookRepository.findByBookPriceBetween(minPrice, maxPrice);
+	}
 }

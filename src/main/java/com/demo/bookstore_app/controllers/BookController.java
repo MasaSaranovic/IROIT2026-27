@@ -90,4 +90,18 @@ public class BookController {
             return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/price")
+    public ResponseEntity<List<Book>> getBooksByPrice(
+    		@RequestParam("minPrice") Double minPrice,
+    		@RequestParam("maxPrice") Double maxPrice
+    		){
+    	if(minPrice > maxPrice) {
+    		return ResponseEntity.badRequest().build();
+    	}
+    	
+    	List<Book> books = bookService.getBooksByPriceRange(minPrice, maxPrice);
+    	
+    	return ResponseEntity.ok(books);
+    }
 }
