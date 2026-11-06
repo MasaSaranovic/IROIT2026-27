@@ -14,11 +14,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -78,5 +80,26 @@ public class BookServiceTest {
        bookService.deleteBook(id);
 
        verify(bookRepository, times(1)).deleteById(id);
+   }
+
+   @Test
+   public void testUpdateBook() throws Exception {
+       Long bookId = 1L;
+       Book existingBook = new Book("The Little Prince", 100.0,
+               "Antoine de Saint-Exupery", "Novel", 1943);
+       existingBook.setBookId(bookId);
+
+       Book updatedDetails = new Book("Vol de nuit", 120.0,
+               "Antoine de Saint-Exupery", "Novel", 1931);
+
+       when(bookRepository.findById(bookId)).thenReturn(Optional.of(existingBook));
+       when(bookRepository.save(any(Book.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+       Book result = bookService.updateBook(bookId, updatedDetails);
+
+       assertNotNull(result);
+       assertEquals("Vol de nuit", result.getBookName());
+       verify(bookRepository).findById(bookId);
+       verify(bookRepository).save(existingBook);
    }
 }
