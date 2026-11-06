@@ -58,12 +58,12 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity createBook(@RequestBody Book newBook) {
-        try {
-            Book addedBook = bookService.saveBook(newBook);
-            return new ResponseEntity(null, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+       try {
+           Book addedBook = bookService.saveBook(newBook);
+           return new ResponseEntity(addedBook, HttpStatus.CREATED);
+       } catch (Exception ex) {
+           return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+       }
     }
 
     //SEARCH BOOKS
@@ -78,9 +78,9 @@ public class BookController {
             if (title != null) {
                 books = bookService.searchBooksByTitle(title);
             } else if (author != null) {
-                books = bookService.searchBooksByGenre(genre);
-            } else if (genre != null) {
                 books = bookService.searchBooksByAuthor(author);
+            } else if (genre != null) {
+                books = bookService.searchBooksByGenre(genre);
             } else {
                 books = bookService.getAllBooks();
             }
