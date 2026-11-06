@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/book")
@@ -103,5 +104,10 @@ public class BookController {
     	List<Book> books = bookService.getBooksByPriceRange(minPrice, maxPrice);
     	
     	return ResponseEntity.ok(books);
+    }
+    
+    @GetMapping("/count-by-genre")
+    public ResponseEntity<Map<String, Long>> getBookCountByGenre(){
+    	return ResponseEntity.ok(bookService.getBookCountByGenre());
     }
 }
