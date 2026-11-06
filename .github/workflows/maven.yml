@@ -2,7 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
+    branches: [ main, 'feature/INT-1' ]
   pull_request:
+    branches: [ main ]
 
 jobs:
   build:
